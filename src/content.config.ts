@@ -7,10 +7,10 @@ const projectsCollection = defineCollection({
     title: z.string(),
     description: z.string(),
     category: z.enum(['Software', 'Graphic Design', 'Branding', 'Web App']),
-    tags: z.array(z.string()),
-    coverImage: z.string(),
+    tags: z.array(z.string()).default([]),
+    coverImage: z.string().optional().default('/images/projects/default-cover.jpg'),
     featured: z.boolean().default(false),
-    publishDate: z.date(),
+    publishDate: z.coerce.date(), // Automatically parses ISO strings and Date objects
     demoUrl: z.string().url().optional(),
     githubUrl: z.string().url().optional(),
   }),
