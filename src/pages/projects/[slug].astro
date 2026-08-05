@@ -1,0 +1,98 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// 1. Generate static paths for every project in the collection
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  
+  return projects.map((project: CollectionEntry<'projects'>) => {
+    // Astro v5/v6 glob loader uses project.id (e.g. "brand-identity-system.md")
+    // Strip the extension if present to get a clean URL slug
+    const slug = project.id.replace(/\.[^/.]+$/, '');
+    return {
+      params: { slug },
+      props: { project },
+    };
+  });
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+// Render the Markdown body content into a component
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} | Case Study`}>
+  <article class="max-w-4xl mx-auto py-12 px-4 sm:px-6">
+    <!-- Back Button -->
+    <a 
+      href="/#projects" 
+      class="inline-flex items-center text-sm font-medium text-slate-400 hover:text-indigo-400 mb-8 transition-colors"
+    >
+      &larr; Back to all projects
+    </a>
+
+    <!-- Header Section -->
+    <header class="mb-10 pb-8 border-b border-slate-800">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+          {project.data.category}
+        </span>
+        <span class="text-xs text-slate-400">
+          Published {new Date(project.data.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+        {project.data.title}
+      </h1>
+
+      <p class="text-lg text-slate-300 leading-relaxed">
+        {project.data.description}
+      </p>
+
+      <!-- Tags & External Links -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-6 border-t border-slate-800/60">
+        <div class="flex flex-wrap gap-2">
+          {project.data.tags.map((tag: string) => (
+            <span class="text-xs font-medium text-slate-300 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/50">
+              #{tag}
+            </span>
+          ))}
+        </div>
+
+        <div class="flex items-center gap-3">
+          {project.data.demoUrl && (
+            <a 
+              href={project.data.demoUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-xs font-semibold px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
+            >
+              Live Demo &rarr;
+            </a>
+          )}
+          {project.data.githubUrl && (
+            <a 
+              href={project.data.githubUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-xs font-semibold px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+            >
+              View GitHub
+            </a>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <!-- Project Markdown Content -->
+    <div class="prose prose-invert prose-slate max-w-none prose-headings:text-white prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-strong:text-white prose-code:text-indigo-300">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

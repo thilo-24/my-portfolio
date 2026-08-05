@@ -1,11 +1,74 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro'; // <--- 1. Import Contact
+import ProjectFilter from '../components/ProjectFilter.jsx'; // <--- 1. Import React component
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+type Project = CollectionEntry<'projects'>;
+
+const allProjects = await getCollection('projects');
+
+const featuredProjects = allProjects
+  .filter((project: Project) => project.data.featured)
+  .sort((a: Project, b: Project) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout title="My Portfolio | Projects & Showcase">
+  <Hero />
+
+  <!-- Featured Projects Section -->
+  <section id="projects" class="py-16">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">Featured Projects</h2>
+        <p class="text-slate-400 text-sm mt-1">A selection of recent design and development work.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {featuredProjects.map((project: Project) => (
+        <article class="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition-all flex flex-col justify-between">
+          <div class="p-6">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                {project.data.category}
+              </span>
+            </div>
+
+            <h3 class="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">
+              {project.data.title}
+            </h3>
+
+            <p class="text-slate-400 text-sm mt-2 line-clamp-2">
+              {project.data.description}
+            </p>
+
+            <div class="flex flex-wrap gap-2 mt-4">
+              {project.data.tags.map((tag: string) => (
+                <span class="text-xs text-slate-400 bg-slate-800/80 px-2 py-1 rounded">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div class="p-6 pt-0 mt-auto flex items-center justify-between border-t border-slate-800/60 pt-4">
+            <a 
+              href={`/projects/${project.id.replace(/\.[^/.]+$/, '')}`} 
+              class="text-sm font-medium text-indigo-400 hover:text-indigo-300 inline-flex items-center gap-1"
+            >
+              Read Case Study &rarr;
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <About />
+
+  <!-- 2. Render Contact Section -->
+  <Contact />
+</BaseLayout>

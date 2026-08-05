@@ -1,0 +1,106 @@
+---
+// You can sign up for a free Access Key at https://web3forms.com using your email.
+// Replace the value below with your key, or set it up in an .env file as PUBLIC_WEB3FORMS_KEY.
+const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
+---
+
+<section id="contact" class="py-16 border-t border-slate-800/60">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-extrabold text-white tracking-tight">Get In Touch</h2>
+      <p class="text-slate-400 text-sm sm:text-base mt-2 max-w-lg mx-auto">
+        Have a project in mind, a question about my work, or want to collaborate? Send me a message below.
+      </p>
+    </div>
+
+    <!-- Contact Form Container -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+      <form 
+        action="https://api.web3forms.com/submit" 
+        method="POST" 
+        class="space-y-6"
+      >
+        <!-- Web3Forms Configuration -->
+        <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+        <input type="hidden" name="subject" value="New Portfolio Contact Form Submission" />
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- Name Field -->
+          <div>
+            <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+              Your Name
+            </label>
+            <input 
+              type="text" 
+              name="name" 
+              id="name" 
+              required 
+              placeholder="John Doe"
+              class="w-full bg-slate-800/80 border border-slate-700/80 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+              Email Address
+            </label>
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              required 
+              placeholder="john@example.com"
+              class="w-full bg-slate-800/80 border border-slate-700/80 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- Subject Line -->
+        <div>
+          <label for="topic" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+            Subject
+          </label>
+          <input 
+            type="text" 
+            name="topic" 
+            id="topic" 
+            required 
+            placeholder="Project Inquiry / Frontend Engineering"
+            class="w-full bg-slate-800/80 border border-slate-700/80 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+          />
+        </div>
+
+        <!-- Message Body -->
+        <div>
+          <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+            Message
+          </label>
+          <textarea 
+            name="message" 
+            id="message" 
+            rows="5" 
+            required 
+            placeholder="Tell me a bit about your project or inquiry..."
+            class="w-full bg-slate-800/80 border border-slate-700/80 rounded-lg px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button 
+            type="submit" 
+            class="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-lg shadow-md transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            Send Message
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
