@@ -3,72 +3,122 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
-import Contact from '../components/Contact.astro'; // <--- 1. Import Contact
-import ProjectFilter from '../components/ProjectFilter.jsx'; // <--- 1. Import React component
+import Contact from '../components/Contact.astro';
+import ProjectFilter from '../components/ProjectFilter.jsx';
 
 type Project = CollectionEntry<'projects'>;
 
 const allProjects = await getCollection('projects');
 
-const featuredProjects = allProjects
-  .filter((project: Project) => project.data.featured)
-  .sort((a: Project, b: Project) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+// Sort all projects by publication date (newest first)
+const sortedProjects = allProjects.sort(
+  (a: Project, b: Project) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+// Filter featured projects for top spotlight section
+const featuredProjects = sortedProjects.filter((project: Project) => project.data.featured);
 ---
 
-<BaseLayout title="My Portfolio | Projects & Showcase">
+<BaseLayout title="Portfolio | Software Engineer & Creative Developer">
+  
+  <!-- Hero Section -->
   <Hero />
 
-  <!-- Featured Projects Section -->
-  <section id="projects" class="py-16">
-    <div class="flex items-center justify-between mb-8">
+  <!-- Featured Projects Spotlight Section -->
+  <section id="featured-projects" class="py-12 sm:py-16">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
       <div>
-        <h2 class="text-3xl font-extrabold text-white tracking-tight">Featured Projects</h2>
-        <p class="text-slate-400 text-sm mt-1">A selection of recent design and development work.</p>
+        <span class="text-xs font-mono font-semibold text-indigo-400 tracking-wider uppercase bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+          Selected Works
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mt-3">
+          Featured Projects
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2 max-w-xl">
+          A curated selection of recent software engineering, web application, and design projects.
+        </p>
       </div>
+
+      <a 
+        href="#all-projects" 
+        class="inline-flex items-center gap-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+      >
+        View All Projects
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {featuredProjects.map((project: Project) => (
-        <article class="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition-all flex flex-col justify-between">
-          <div class="p-6">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                {project.data.category}
-              </span>
-            </div>
-
-            <h3 class="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">
-              {project.data.title}
-            </h3>
-
-            <p class="text-slate-400 text-sm mt-2 line-clamp-2">
-              {project.data.description}
-            </p>
-
-            <div class="flex flex-wrap gap-2 mt-4">
-              {project.data.tags.map((tag: string) => (
-                <span class="text-xs text-slate-400 bg-slate-800/80 px-2 py-1 rounded">
-                  #{tag}
+    {/* Featured Cards Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {featuredProjects.map((project: Project) => {
+        const slug = project.id.replace(/\.[^/.]+$/, '');
+        return (
+          <article class="group relative bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 flex flex-col justify-between backdrop-blur-sm">
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  {project.data.category}
                 </span>
-              ))}
-            </div>
-          </div>
+                <span class="text-xs font-mono text-slate-500">
+                  {new Date(project.data.publishDate).getFullYear()}
+                </span>
+              </div>
 
-          <div class="p-6 pt-0 mt-auto flex items-center justify-between border-t border-slate-800/60 pt-4">
-            <a 
-              href={`/projects/${project.id.replace(/\.[^/.]+$/, '')}`} 
-              class="text-sm font-medium text-indigo-400 hover:text-indigo-300 inline-flex items-center gap-1"
-            >
-              Read Case Study &rarr;
-            </a>
-          </div>
-        </article>
-      ))}
+              <h3 class="text-2xl font-extrabold text-white group-hover:text-indigo-400 transition-colors duration-200">
+                {project.data.title}
+              </h3>
+
+              <p class="text-slate-400 text-sm mt-3 leading-relaxed line-clamp-2">
+                {project.data.description}
+              </p>
+
+              <div class="flex flex-wrap gap-2 mt-6">
+                {project.data.tags.map((tag: string) => (
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800/60 border border-slate-800 px-2.5 py-1 rounded-md">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div class="p-6 sm:p-8 pt-0 mt-auto flex items-center justify-between border-t border-slate-800/60 pt-4">
+              <a 
+                href={`/projects/${slug}`} 
+                class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 inline-flex items-center gap-1.5 transition-colors"
+              >
+                Read Case Study
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </section>
 
+  <!-- All Projects & Interactive React Filter Section -->
+  <section id="all-projects" class="py-12 sm:py-16 border-t border-slate-800/60">
+    <div class="mb-10">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        Explore All Projects
+      </h2>
+      <p class="text-slate-400 text-sm mt-1">
+        Filter through my complete archive of work by domain or tech stack.
+      </p>
+    </div>
+
+    <!-- React Hydrated Component for Instant Client-Side Filtering -->
+    <ProjectFilter initialProjects={sortedProjects} client:load />
+  </section>
+
+  <!-- About Section -->
   <About />
 
-  <!-- 2. Render Contact Section -->
+  <!-- Contact Section -->
   <Contact />
+
 </BaseLayout>
