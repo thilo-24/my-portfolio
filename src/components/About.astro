@@ -1,65 +1,108 @@
 ---
+// Define the base path for assets. Adjust if your image structure differs.
+const profilePicture = '/images/11.png'; // Place your picture in public/images/
+
 const skillCategories = [
   {
-    category: "Development & Frameworks",
-    skills: ["Astro", "React", "TypeScript", "JavaScript", "HTML5/CSS3", "Tailwind CSS", "Node.js"]
+    category: "Development & Modern Frameworks",
+    icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 002-2H5a2 2 0 002 2v12a2 2 0 002 2z"></path></svg>`,
+    skills: ["Astro", "React", "TypeScript", "JavaScript", "HTML5/CSS3", "Tailwind CSS", "Node.js", "Next.js", "REST APIs"]
   },
   {
-    category: "Design & Media",
-    skills: ["Brand Identity", "Vector Graphics", "UI/UX Design", "Layout & Typography", "Asset Production"]
+    category: "Design & UX Strategy",
+    icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18a6 6 0 100-12 6 6 0 000 12zM12 12a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 15a4.5 4.5 0 100-9 4.5 4.5 0 000 9z"></path></svg>`,
+    skills: ["Figma", "UI/UX Design", "Brand Identity", "Vector Graphics", "Adobe CC", "Asset Production", "Typography"]
   },
   {
-    category: "Tools & Workflow",
-    skills: ["Git & GitHub", "VS Code", "Vercel", "npm / Node Package Manager"]
+    category: "Workflow & Cloud Solutions",
+    icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 012-2v-6a2 2 0 012 2zm-7-7H7M7 4H3a2 2 0 002-2v12a2 2 0 002 2h4a2 2 0 002-2V4a2 2 0 002-2H7z"></path></svg>`,
+    skills: ["Git & GitHub", "CI/CD Pipelines", "Vercel", "npm/Node.js", "Agile Methodologies", "Supabase", "PostgreSQL"]
   }
 ];
 ---
 
-<section id="about" class="py-16 border-t border-slate-800/60">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<section id="about" class="py-20 border-t border-slate-800/60">
+  <div class="grid grid-cols-1 md:grid-cols-10 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
     
-    <!-- Left Column: Bio & Background -->
-    <div class="lg:col-span-5 space-y-6">
-      <div>
-        <h2 class="text-3xl font-extrabold text-white tracking-tight">About Me</h2>
-        <p class="text-indigo-400 font-medium text-sm mt-1">Developer & Creative Designer</p>
+    <!-- Left Column: Bio & Profile Picture -->
+    <div class="md:col-span-10 lg:col-span-5 space-y-10">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <!-- Profile Picture Container -->
+        <div class="relative group">
+          <!-- Animated Background Glow -->
+          <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <div class="relative w-32 h-32 rounded-full overflow-hidden border-4 border-slate-900 bg-slate-800 flex items-center justify-center">
+            {profilePicture ? (
+              <img 
+                src={profilePicture} 
+                alt="Profile picture of a Developer and Creative Designer" 
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                loading="lazy"
+              />
+            ) : (
+              <svg class="w-16 h-16 text-slate-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+            )}
+          </div>
+        </div>
+
+        <div class="flex-1 text-center sm:text-left">
+          <h2 class="text-3xl font-extrabold text-white tracking-tight">About Me</h2>
+          <p class="text-indigo-400 font-medium text-sm mt-1">Full-Stack Developer & Visual Strategist</p>
+          <p class="text-slate-400 text-xs mt-3 leading-relaxed">
+            Sri Lanka-based Creative specializing in modern digital ecosystems and brand evolution.
+          </p>
+        </div>
       </div>
 
-      <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
-        I specialize in building fast, modern web applications and crafting crisp visual brand identities. My work focuses on clean code structure, high performance, and thoughtful user interfaces.
-      </p>
+      <!-- Enhanced Bio Text -->
+      <div class="space-y-6 prose prose-invert prose-slate prose-sm sm:prose-base max-w-none">
+        <p class="text-slate-300">
+          As a hybrid engineer and designer, I leverage the synergy between efficient code and engaging visual strategy. I focus on developing performant web applications using frameworks like Astro and React, while crafting intuitive User Interfaces (UI) and comprehensive brand identities that resonate.
+        </p>
+        <p class="text-slate-300">
+          My goal is to accelerate business growth by delivering seamless digital products. I emphasize maintainable code architecture, optimizing for speed and conversion, and ensuring robust visual systems from concept to deployment.
+        </p>
 
-      <p class="text-slate-400 leading-relaxed text-sm sm:text-base">
-        Whether developing performant static sites with Astro and React or executing brand systems and digital assets, I bring ideas to life with precision and focus.
-      </p>
-
-      <!-- Quick Stats / Highlights -->
-      <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800/60">
-        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-          <div class="text-2xl font-bold text-white">100%</div>
-          <div class="text-xs text-slate-400 mt-0.5">Focus on Performance</div>
-        </div>
-        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-          <div class="text-2xl font-bold text-white">Full-Stack</div>
-          <div class="text-xs text-slate-400 mt-0.5">Development & Design</div>
-        </div>
+        <!-- Professional Value List -->
+        <ul class="text-slate-300 list-none pl-0 mt-6 space-y-3 not-prose text-sm sm:text-base">
+          <li class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <span>Focus on Web Performance & SEO Optimization</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <span>Maintainable Codebase Structure & Security Best Practices</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 002 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 002-2h-2a2 2 0 002 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 002-2H6a2 2 0 002 2v2a2 2 0 002 2z"></path></svg>
+            <span>User-Centric UI/UX Design & Brand Strategy</span>
+          </li>
+        </ul>
       </div>
+
     </div>
 
     <!-- Right Column: Technical Skills Grid -->
-    <div class="lg:col-span-7 space-y-6">
-      <h3 class="text-xl font-bold text-white mb-2">Technical Skills & Tools</h3>
+    <div class="md:col-span-10 lg:col-span-7 space-y-8">
+      <div class="flex items-center justify-between gap-4">
+        <h3 class="text-xl font-bold text-white tracking-tight">Core Competencies & Stack</h3>
+        <span class="text-xs font-mono text-slate-500">Updated: Q3 2024</span>
+      </div>
 
       <div class="space-y-6">
         {skillCategories.map((cat) => (
-          <div class="bg-slate-900/50 border border-slate-800/80 rounded-xl p-5 hover:border-slate-700/80 transition-colors">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-3">
-              {cat.category}
-            </h4>
+          <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 hover:border-indigo-500/30 hover:bg-slate-900/80 transition-all duration-300 group">
+            <div class="flex items-center gap-3 text-indigo-400 mb-4">
+              <Fragment set:html={cat.icon} />
+              <h4 class="text-xs font-bold uppercase tracking-wider">
+                {cat.category}
+              </h4>
+            </div>
 
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2.5">
               {cat.skills.map((skill) => (
-                <span class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 text-slate-200 border border-slate-700/60 shadow-sm">
+                <span class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-800/60 text-slate-200 border border-slate-700/60 shadow-inner group-hover:border-slate-700 group-hover:bg-slate-800/80 transition-colors">
                   {skill}
                 </span>
               ))}
